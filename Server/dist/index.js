@@ -7,14 +7,24 @@ const socket_io_1 = __importDefault(require("socket.io"));
 const http_1 = __importDefault(require("http"));
 const express = require("express");
 const route_1 = __importDefault(require("./route"));
+const user_1 = require("./user");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const server = http_1.default.createServer(app);
 const io = socket_io_1.default(server);
 app.use(route_1.default);
 io.on("connection", (socket) => {
-    // tslint:disable-next-line:no-console
-    console.log("a user connected");
+    socket.on('join', ({ name, room }, callback) => {
+        const { error, user } = user_1.addUser({ id: `${Math.floor(Math.random() * 100000000000000)}`, name, room });
+        // tslint:disable-next-line:no-console
+        // console.log(user)
+        if (error)
+            return callback(error);
+        socket.emit('message', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
+        socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined` });
+        socket.join(user.room);
+        callback();
+    });
 });
 server.listen(PORT, 
 // tslint:disable-next-line:no-console
