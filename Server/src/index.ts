@@ -29,7 +29,7 @@ io.on("connection", (socket: any) => {
   socket.on('join', ({ name , room }: any , callback: any)  => {
     const {error, user}  = addUser({id:`${Math.floor(Math.random()* 100000000000000)}`, name, room});
     // tslint:disable-next-line:no-console
-    // console.log(user)
+    console.log(user)
 
 
     if (error) return callback(error);

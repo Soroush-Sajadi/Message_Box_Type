@@ -17,7 +17,7 @@ io.on("connection", (socket) => {
     socket.on('join', ({ name, room }, callback) => {
         const { error, user } = user_1.addUser({ id: `${Math.floor(Math.random() * 100000000000000)}`, name, room });
         // tslint:disable-next-line:no-console
-        // console.log(user)
+        console.log(user);
         if (error)
             return callback(error);
         socket.emit('message', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
