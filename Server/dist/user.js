@@ -1,7 +1,7 @@
 "use strict";
 // const { use } = require("./router");
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUser = void 0;
+exports.getUser = exports.addUser = void 0;
 // interface Error {
 //     error: string
 // }
@@ -24,7 +24,7 @@ const removeUser = (id) => {
         return users.splice(index, 1)[0];
     }
 };
-const getUser = (id) => users.find(user => user.id === id);
+exports.getUser = (id) => users.find(user => user.id === id);
 const getUsersInRoom = (room) => users.filter(user => user.room === room);
 // const addMember = (name, room) => {
 //     const excistingUser = members.find(user => user.room === room && user.name === name);

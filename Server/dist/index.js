@@ -15,7 +15,7 @@ const io = socket_io_1.default(server);
 app.use(route_1.default);
 io.on("connection", (socket) => {
     socket.on('join', ({ name, room }, callback) => {
-        const { error, user } = user_1.addUser({ id: `${Math.floor(Math.random() * 100000000000000)}`, name, room });
+        const { error, user } = user_1.addUser({ id: socket.id, name, room });
         // tslint:disable-next-line:no-console
         console.log(user);
         if (error)
@@ -24,6 +24,17 @@ io.on("connection", (socket) => {
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined` });
         socket.join(user.room);
         callback();
+    });
+    socket.on('sendMessage', (message, callback) => {
+        const user = user_1.getUser(socket.id);
+        // tslint:disable-next-line:no-console
+        console.log(user);
+        io.to(user.room).emit('message', { user: user.name, text: message });
+        callback();
+    });
+    socket.on('disconnect', () => {
+        // tslint:disable-next-line:no-console
+        console.log('user just left');
     });
 });
 server.listen(PORT, 
