@@ -32,7 +32,7 @@ io.on("connection", (socket: any) => {
     console.log(user)
 
 
-    if (error) return callback(error);
+    if (error) return socket.emit('message', {user: 'admin', text: 'false'});
     socket.emit('message', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}`});
     socket.broadcast.to(user.room).emit('message', {user: 'admin', text: `${user.name} has joined`});
     socket.join(user.room);

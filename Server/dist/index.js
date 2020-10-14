@@ -19,7 +19,7 @@ io.on("connection", (socket) => {
         // tslint:disable-next-line:no-console
         console.log(user);
         if (error)
-            return callback(error);
+            return socket.emit('message', { user: 'admin', text: 'false' });
         socket.emit('message', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined` });
         socket.join(user.room);
