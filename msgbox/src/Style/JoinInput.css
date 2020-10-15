@@ -1,0 +1,57 @@
+body {
+    background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
+
+}
+.join-outer-container {
+    text-align: center;
+    margin-top: 30vh;
+    
+
+}
+
+.join-inner-conatainer {
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    width: 30%;
+    /* width: 40%; */
+    height: 40vh;
+}
+
+.join-inner-conatainer input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+    border-bottom: .3vh solid ;
+    background: linear-gradient(110deg, #fdcd3b 50%, #ffed4b 60%);
+
+
+}
+
+.join-inner-conatainer input:focus {
+    outline: none;
+    border-bottom: .5vh solid #159ad4 ;
+}
+
+.join-input-room {
+    margin-top: 4vh;
+}
+
+.join-inner-conatainer button {
+    border: none;
+    margin-top: 2vh;
+    width: 10vh;
+    height: 4vh;
+    float: left;
+    background-color: #159ad4;
+    font-size: 1.5vh;
+    cursor: pointer;
+}
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+.join-inner-conatainer h1 {
+    font-size: 3.7vh
+}

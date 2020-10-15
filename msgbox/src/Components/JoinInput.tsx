@@ -1,12 +1,7 @@
 import React,{ useState } from 'react';
-import Chat from './Chat';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom'
-
-import { JoinState } from '../Redux/joinReducer';
-
-
-// import './Join.css'
+import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom'
+import '../Style/JoinInput.css'
 
 const JoinInput = () => {
   const [ userOnChange, setUserOnChange ] = useState('');
@@ -32,13 +27,13 @@ const JoinInput = () => {
   return(
    <>
     <div className="join-outer-container">
-    <div className="join-inner-conatainer">
-      <h1 className="heading">Join</h1>
-      <div><input placeholder="Name" value={userOnChange} className="join-input" type="text" onChange= {event => setUserOnChange(event.target.value)}/></div>
-      <div><input placeholder="Room" value={roomOnChange}  className="join-input mt-20" type="text" onChange= {event => setRoomOnChange(event.target.value)}/></div>
-      <button onClick={dispatchNewUser} className="button mt-20" type="submit">Sign In</button>
-      {user !== '' && room !== '' ? <Redirect  to={`/chat`}/>: null}
-    </div> 
+      <div className="join-inner-conatainer">
+        <h1 className="heading">Join</h1>
+        <div><input placeholder="Name" value={userOnChange} className="join-input-name" type="text" onChange= {event => setUserOnChange(event.target.value)}/></div>
+        <div><input placeholder="Room" value={roomOnChange}  className="join-input-room" type="text" onChange= {event => setRoomOnChange(event.target.value)}/></div>
+        <button onClick={dispatchNewUser} className="button mt-20" type="submit">Sign In</button>
+        {user !== '' && room !== '' ? <Redirect  to={`/chat`}/>: null}
+      </div> 
   </div>
    </>
   )
