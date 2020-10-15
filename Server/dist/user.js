@@ -1,7 +1,7 @@
 "use strict";
 // const { use } = require("./router");
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.addUser = void 0;
+exports.getUser = exports.removeUser = exports.addUser = void 0;
 // interface Error {
 //     error: string
 // }
@@ -18,7 +18,7 @@ exports.addUser = ({ id, name, room }) => {
     users.push(user);
     return { user };
 };
-const removeUser = (id) => {
+exports.removeUser = (id) => {
     const index = users.findIndex(user => user.id === id);
     if (index !== -1) {
         return users.splice(index, 1)[0];

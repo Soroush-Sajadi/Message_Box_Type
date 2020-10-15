@@ -15,24 +15,23 @@ const io = socket_io_1.default(server);
 app.use(route_1.default);
 io.on("connection", (socket) => {
     socket.on('join', ({ name, room }, callback) => {
+        // const id: string = `${Math.floor(Math.random( ) * 10000000000000)}`
         const { error, user } = user_1.addUser({ id: socket.id, name, room });
         // tslint:disable-next-line:no-console
         console.log(user);
         if (error)
-            return socket.emit('message', { user: 'admin', text: 'false' });
-        socket.emit('message', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
-        socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined` });
+            return socket.emit('joinMessage', { user: 'admin', text: 'false' });
+        socket.emit('joinMessage', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
+        socket.broadcast.to(user.room).emit('joinMessage', { user: 'admin', text: `${user.name} has joined` });
         socket.join(user.room);
         callback();
     });
-    socket.on('sendMessage', (message, callback) => {
+    socket.on('sendMessage', (message) => {
         const user = user_1.getUser(socket.id);
-        // tslint:disable-next-line:no-console
-        console.log(user);
         io.to(user.room).emit('message', { user: user.name, text: message });
-        callback();
     });
     socket.on('disconnect', () => {
+        user_1.removeUser(socket.id);
         // tslint:disable-next-line:no-console
         console.log('user just left');
     });

@@ -1,5 +1,5 @@
 import React from 'react';
-import Join from './Components/Join';
+import JoinInput from './Components/JoinInput';
 import Chat from './Components/Chat'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
@@ -7,10 +7,13 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Route exact path="/" component={Join} />
-        <Route path="/chat" component={Chat} />
-      </Router>
+      {/* < JoinInput /> */}
+       <Router>
+        <Route exact path="/" component={JoinInput} />
+        <Route exact path="/chat" component={Chat} />
+
+        {/* <Route exact path="/chat" render={() => <ChatBox />} /> */}
+      </Router> 
 
     </div>
   );

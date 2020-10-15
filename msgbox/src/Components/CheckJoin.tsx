@@ -14,18 +14,16 @@ interface JoinMessage {
 const CheckJoin = () => {
   const [ nasme, setName ] = useState<string | null | string[]>('');
   const [ rodom, setRoom ] = useState<string | null | string[]>('');
-  const [ message, setMessage ] = useState<string>('')
+  const [ onChangeText, setOnChangeText ] = useState('');
+  const [ message, setMessage ] = useState('')
   const [ messages, setMessages ] = useState<JoinMessage[]>([])
 
-  const name = useSelector <JoinState, JoinState["newUser"]>(state => state.newUser)[0][0]
-  const room = useSelector <JoinState, JoinState["newUser"]>(state => state.newUser)[0][1]
+  const name = useSelector <any>(state => state.joinReducer.newUser[0][0])
+  const room = useSelector <any>(state => state.joinReducer.newUser[0][1])
   const ENDPOINT: string = 'localhost:5000';
-  
+
   useEffect(() =>  {
     socket = io(ENDPOINT)   
-    // setName(newUser[0][0]);
-    // setRoom(newUser[0][1]);
-   
     socket.emit('join', {name, room}, () => {
     });
     return () => {
@@ -34,7 +32,6 @@ const CheckJoin = () => {
     }
   },[ name, room]);
   useEffect(() => {
-    console.log('work')
     socket.on('message', (message:JoinMessage) => {
         setMessages([...messages, message])
     })
@@ -46,11 +43,24 @@ const CheckJoin = () => {
     }
   },[message, name, room])
 
-  console.log(messages)
+  const sendChat = (event: React.KeyboardEvent) => {
+    event.preventDefault();
+    if (onChangeText !== '') {
+      setMessage(onChangeText)
+    }
+    
+  }
   
   return(
     <>
-      {messages.length !== 0 ? messages[0].text === 'false' ? <p> This user is taken</p> : <Redirect to={`/chat?name=${name}&room=${room}`}/>: null}
+      {/* {messages.length !== 0 ? messages[0].text === 'false' ? <p> This user is taken</p> : <Redirect to={`/chat?name=${name}&room=${room}`}/>: null} */}
+      <div>
+      <input type="text" placeholder="write message" 
+        onChange= {event => setOnChangeText(event.target.value)}
+        onKeyPress={event => event.key === 'Enter' ? sendChat(event): null}
+        />
+    </div>
+    {/* {message.text !== 'false'} */}
     </>
   )
 }

@@ -1,65 +1,86 @@
 import React,{ useState, useEffect} from 'react';
+import ChatRender from './ChatRender';
+import ChatBox from './ChatBox'
 import io from 'socket.io-client';
-import queryString from 'query-string';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom'
 
+let socket: any;
 
-// let socket: any;
-// interface In {
-  
-// }
-// interface JoinMessage {
-//   user: string
-//   text: string
-// }
+interface Messages {
+  user: string
+  text: string
+}
 
-// // const JoinMessage : JoinMessage[] = [
-// //   {user: '', text: ''}
-// // ]
+interface Message {
+  text: string
+}
+
+const messagesInitilaState = {
+  user:'',
+  text:''
+}
 
 const Chat = () => {
-//   const [ name, setName ] = useState<string | null | string[]>('');
-//   const [ room, setRoom ] = useState<string | null | string[]>('');
-//   const [ message, setMessage ] = useState<string>('')
-//   const [ messages, setMessages ] = useState<JoinMessage[]>([])
-//   const [ newMessage, setNewMessage ] = useState<string >('')
-//   const ENDPOINT: string = 'localhost:5000';
+  const [ joinMessage, setJoinMessage ] = useState('');
+  const name = useSelector <any>(state => (state.joinReducer.newUser)[0][0]);
+  const room = useSelector <any>(state => (state.joinReducer.newUser)[0][1]);
+  const message = useSelector <any>(state => state.messageReducer)
+  // const messages = useSelector <any>(state => state.chatReducer)
+  // const [ messages, setMessages ] = useState<Messages[]>([]);
+  const ENDPOINT: string = 'localhost:5000';
+  const dispatch = useDispatch();
 
-//   useEffect(() =>  {
-//     const { name, room } = queryString.parse(location.search);
-//     socket = io(ENDPOINT)
-   
-//     setName(name);
-//     setRoom(room);
+  useEffect(() =>  {
+      socket = io(ENDPOINT)
+      socket.emit('join', {name, room}, () => {
+      });
+      return () => {
+        socket.emit('disconnect');
+        socket.off();
+      }
+  },[name, room]);
 
-//     socket.emit('join', { name, room }, () => {
-//     });
-//     return () => {
-//       socket.emit('disconnect');
-//       socket.off();
-//     }
-//   },[ENDPOINT, location.search]);
+  useEffect(() => {
+    socket.on('joinMessage', (message: Messages) => {
+      // console.log('are u here again!')
+      setJoinMessage(message.text)
+      dispatch({type:"ADD_MSGS_CHAT", payload: message })
+    })
+  },[name, room]);
 
-//   useEffect(() => {
-//     socket.on('message', (message:JoinMessage) => {
-//         setMessages([...messages, message])
-//     })
+  useEffect(() => {
+      socket.on('message', (message: Messages) => {
+        dispatch({type:"ADD_MSGS_CHAT", payload:  message })
+    }) 
+  },[]);
 
-//   },[messages, message]);
-//   useEffect(() => {
-//     if (message) {
-//         socket.emit('sendMessage' , message, () => setMessage(''))
-//     }
-//   },[message])
+  useEffect(() => {
+    if (message !== '') {
+        socket.emit('sendMessage' , message)
+    }
+  },[message])
+  
 
-//   const sendMessage = (event: React.KeyboardEvent<HTMLElement>) => {
-//     event.preventDefault();
-//     setMessage(newMessage)
 
-//   }
-//   console.log(messages)
+  // const sendChat = (event: React.KeyboardEvent) => {
+  //   event.preventDefault();
+  //   if (onChangeText !== '') {
+  //     setMessage(onChangeText)
+  //   }
+    
+  // }
+
+  // const chat = useSelector <any>(state => state.chatReducer)
+  // const dispatch = useDispatch();
+
+  // const saveChat = (user: string, text:string) => {
+  //   dispatch({type:"ADD_MSG_CHAT", payload: {user:user,text: text}})
+  //   // dispatch({type:"JOIN_USER", payload: newRoom})
+  // }
   return(
       <div className="container">
-        chat
+        { joinMessage === 'false'  ? <Redirect to="/" /> : <ChatBox /> }
       </div>
   )
 }

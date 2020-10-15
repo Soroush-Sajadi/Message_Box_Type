@@ -1,5 +1,13 @@
 
-import { createStore } from 'redux';
-import { joinReducer}  from '../Redux/joinReducer'
+import { combineReducers, createStore } from 'redux';
+import { joinReducer}  from './joinReducer';
+import { chatReducer } from './chatReducer';
+import { messageReducer } from './messageReducer'
 
-export const store = createStore(joinReducer);
+const rootReducer = combineReducers({
+    joinReducer: joinReducer,
+    chatReducer: chatReducer,
+    messageReducer: messageReducer
+  })
+
+export const store = createStore(rootReducer);

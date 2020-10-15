@@ -5,7 +5,7 @@ import http from 'http';
 import express = require('express');
 import router from './route';
 import { Socket } from 'dgram';
-import { addUser, getUser }  from './user';
+import { addUser, getUser, removeUser }  from './user';
 
 
 const app: Application = express();
@@ -27,27 +27,26 @@ interface Error {
 app.use(router);
 io.on("connection", (socket: any) => {
   socket.on('join', ({ name , room }: any , callback: any)  => {
+    // const id: string = `${Math.floor(Math.random( ) * 10000000000000)}`
     const {error, user}  = addUser({id:socket.id, name, room});
     // tslint:disable-next-line:no-console
     console.log(user)
 
 
-    if (error) return socket.emit('message', {user: 'admin', text: 'false'});
-    socket.emit('message', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}`});
-    socket.broadcast.to(user.room).emit('message', {user: 'admin', text: `${user.name} has joined`});
+    if (error) return socket.emit('joinMessage', {user: 'admin', text: 'false'});
+    socket.emit('joinMessage', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}`});
+    socket.broadcast.to(user.room).emit('joinMessage', {user: 'admin', text: `${user.name} has joined`});
     socket.join(user.room);
     callback()
 })
-  socket.on('sendMessage', (message: string, callback: any) => {
+  socket.on('sendMessage', (message: string) => {
   const user = getUser(socket.id);
-  // tslint:disable-next-line:no-console
-  console.log(user)
-
   io.to(user.room).emit('message', {user: user.name, text: message });
-  callback()
   })
 
+
   socket.on('disconnect', () => {
+    removeUser(socket.id)
   // tslint:disable-next-line:no-console
   console.log('user just left')
   })
