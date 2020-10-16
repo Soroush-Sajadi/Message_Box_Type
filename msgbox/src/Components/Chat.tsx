@@ -28,16 +28,14 @@ const Chat = () => {
   const name = useSelector <any>(state => (state.joinReducer.newUser)[0][0]);
   const room = useSelector <any>(state => (state.joinReducer.newUser)[0][1]);
   const message = useSelector <any>(state => state.messageReducer);
-  const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer)
-
-  // const messages = useSelector <any>(state => state.chatReducer)
-  // const [ messages, setMessages ] = useState<Messages[]>([]);
+  const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer);
   const ENDPOINT: string = 'localhost:5000';
   const dispatch = useDispatch();
 
   useEffect(() =>  {
       socket = io(ENDPOINT)
       socket.emit('join', {name, room}, () => {
+        dispatch({type:"OWNER", payload: name})
       });
       return () => {
         socket.emit('disconnect');
@@ -48,7 +46,6 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on('joinMessage', (message: Messages) => {
-      // console.log('are u here again!')
       setJoinMessage(message.text)
       if (message.text !== 'false') {
         dispatch({type:"ADD_MSGS_CHAT", payload: message })
@@ -69,21 +66,6 @@ const Chat = () => {
     }
   },[message])
 
-  // const sendChat = (event: React.KeyboardEvent) => {
-  //   event.preventDefault();
-  //   if (onChangeText !== '') {
-  //     setMessage(onChangeText)
-  //   }
-    
-  // }
-
-  // const chat = useSelector <any>(state => state.chatReducer)
-  // const dispatch = useDispatch();
-
-  // const saveChat = (user: string, text:string) => {
-  //   dispatch({type:"ADD_MSG_CHAT", payload: {user:user,text: text}})
-  //   // dispatch({type:"JOIN_USER", payload: newRoom})
-  // }
   return(
       <div className="container">
         { joinMessage === 'false'  ? <Redirect to="/" /> : <ChatBox /> }
@@ -92,11 +74,3 @@ const Chat = () => {
 }
 
 export default Chat;
-
-{/*     
-        <input 
-          value={newMessage} 
-          onChange={event => setNewMessage(event.target.value)}
-          onKeyPress={event => event.key === 'Enter' ? sendMessage(event): null}
-          />
-        { messages.map((item, i) => item.text === 'false' ? <p key={i}>nooooo</p>: null)} */}
