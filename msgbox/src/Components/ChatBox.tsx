@@ -37,7 +37,8 @@ const ChatBox = () => {
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">
-        {/* <h3>hi</h3> */}
+        <h5>members 10</h5>
+        <h3>Welcome to My Chat Box!</h3>
       </div>
       <div className="chatBox-body">
         {messages.map(item => <div ref={messagesEndRef}  className={item.user === "admin" ? "chatBox-body-text-admin": item.user === owner ? "chatBox-body-text-owner" :"chatBox-body-text"} >
