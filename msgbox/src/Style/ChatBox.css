@@ -9,14 +9,14 @@
 .chatBox-header {
     width: 100%;
     height: 10vh;
-    border-bottom:1px solid ;
+    /* border-bottom:1px solid ; */
     background-color: darkblue;
 }
 
 .chatBox-body {
     width: 100%;
     height: 59vh;
-    border-bottom: 1px solid;
+    /* border-bottom: 1px solid; */
     background-color: aliceblue;
 }
 
@@ -34,7 +34,7 @@
     height: 100%;
     margin-top: 1vh;
     margin-left: 4%;
-    margin-top: 4%;
+    margin-top: 2%;
     border-radius: 5vh ;
 
 }
