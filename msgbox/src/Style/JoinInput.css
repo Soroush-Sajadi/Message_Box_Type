@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(110deg, #fdcd3b 60%, #ffed4b 60%);
+    background: linear-gradient(110deg, #fdcd3b 50%, #ffed4b 70%);
 
 }
 .join-outer-container {
@@ -24,7 +24,7 @@ body {
     border-right: none;
     width: 100%;
     border-bottom: .3vh solid ;
-    background: linear-gradient(110deg, #fdcd3b 50%, #ffed4b 60%);
+    background: linear-gradient(110deg, #fdcd3b 50%, #ffed4b 70%);
 
 
 }
@@ -48,6 +48,11 @@ body {
     font-size: 1.5vh;
     cursor: pointer;
 }
+
+.join-inner-conatainer button:hover {
+    font-size: 1.8vh;
+}
+
 ::-webkit-input-placeholder {
     text-align: center;
 }

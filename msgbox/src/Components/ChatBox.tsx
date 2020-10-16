@@ -1,5 +1,6 @@
 import React, { KeyboardEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import '../Style/ChatBox.css'
 
 const ChatBox = () => {
   const [ message, setMessage ] = useState('');
@@ -15,12 +16,20 @@ const ChatBox = () => {
   }
   console.log(messages)
   return(
-    <>
+    <div className = "chatBox-wrapper">
+      <div className="chatBox-header">
+        {/* <h3>hi</h3> */}
+      </div>
+      <div className="chatBox-body">
+        
+      </div>
+      <div className="chatBox-bottom">
       <input type="text" value={message}
         onChange={event => setMessage(event.target.value)}
         onKeyPress={event => event.key === 'Enter' ? dispatchMessage(event): null}
       />
-    </>
+      </div>
+    </div>
   )
 }
 
