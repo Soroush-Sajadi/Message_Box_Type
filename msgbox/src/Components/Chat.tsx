@@ -3,7 +3,9 @@ import ChatRender from './ChatRender';
 import ChatBox from './ChatBox'
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom'
+import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
+import {RootState} from '../Redux/store'
+
 
 let socket: any;
 
@@ -25,7 +27,9 @@ const Chat = () => {
   const [ joinMessage, setJoinMessage ] = useState('');
   const name = useSelector <any>(state => (state.joinReducer.newUser)[0][0]);
   const room = useSelector <any>(state => (state.joinReducer.newUser)[0][1]);
-  const message = useSelector <any>(state => state.messageReducer)
+  const message = useSelector <any>(state => state.messageReducer);
+  const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer)
+
   // const messages = useSelector <any>(state => state.chatReducer)
   // const [ messages, setMessages ] = useState<Messages[]>([]);
   const ENDPOINT: string = 'localhost:5000';
@@ -40,6 +44,7 @@ const Chat = () => {
         socket.off();
       }
   },[name, room]);
+
 
   useEffect(() => {
     socket.on('joinMessage', (message: Messages) => {
@@ -59,11 +64,10 @@ const Chat = () => {
 
   useEffect(() => {
     if (message !== '') {
-        socket.emit('sendMessage' , message)
+      socket.emit('sendMessage' , message);
+      dispatch({type:"ADD_MSG_CHAT", payload: '' });
     }
   },[message])
-  
-
 
   // const sendChat = (event: React.KeyboardEvent) => {
   //   event.preventDefault();

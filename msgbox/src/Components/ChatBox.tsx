@@ -13,13 +13,13 @@ const ChatBox = () => {
   const [ message, setMessage ] = useState('');
   const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer)
   const dispatch = useDispatch();
-  // const messagesEndRef  = useRef<HTMLDivElement>(null)
+  const messagesEndRef  = useRef<HTMLDivElement>(null)
 
-  // const scrollToBottom = () => {
-  //   if (messagesEndRef.current !== null) {
-  //     messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
-  //   }
-  // }
+  const scrollToBottom = () => {
+    if (messagesEndRef.current !== null) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }
 
   const dispatchMessage = (event: KeyboardEvent) => {
     event.preventDefault();
@@ -28,15 +28,19 @@ const ChatBox = () => {
       setMessage('');
     }
   }
-  // useEffect(scrollToBottom, [messages.length]);
+  useEffect(() => {
+    // console.log('asdasd')
+    scrollToBottom()
+  },[messages])
 
+  console.log(messages)
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">
         {/* <h3>hi</h3> */}
       </div>
       <div className="chatBox-body">
-        {messages.map(item => <div  className={item.user === "admin" ? "chatBox-body-text-admin": "chatBox-body-text"} >
+        {messages.map(item => <div ref={messagesEndRef} className={item.user === "admin" ? "chatBox-body-text-admin": "chatBox-body-text"} >
       {item.user === 'admin' ? <p >{item.text}</p>:<div><p className="user">{item.user}</p><p className="text">{item.text}</p></div>
         }
         </div>)}
