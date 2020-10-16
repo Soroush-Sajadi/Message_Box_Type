@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chat } from '../Redux/chatReducer';
 import {RootState} from '../Redux/store'
@@ -12,8 +12,14 @@ interface Messages {
 const ChatBox = () => {
   const [ message, setMessage ] = useState('');
   const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer)
-
   const dispatch = useDispatch();
+  // const messagesEndRef  = useRef<HTMLDivElement>(null)
+
+  // const scrollToBottom = () => {
+  //   if (messagesEndRef.current !== null) {
+  //     messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+  //   }
+  // }
 
   const dispatchMessage = (event: KeyboardEvent) => {
     event.preventDefault();
@@ -22,7 +28,8 @@ const ChatBox = () => {
       setMessage('');
     }
   }
-  console.log(messages)
+  // useEffect(scrollToBottom, [messages.length]);
+
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">
@@ -30,7 +37,8 @@ const ChatBox = () => {
       </div>
       <div className="chatBox-body">
         {messages.map(item => <div  className={item.user === "admin" ? "chatBox-body-text-admin": "chatBox-body-text"} >
-          <p>{item.user}: {item.text}</p>
+      {item.user === 'admin' ? <p >{item.text}</p>:<div><p className="user">{item.user}</p><p className="text">{item.text}</p></div>
+        }
         </div>)}
       </div>
       <div className="chatBox-bottom">

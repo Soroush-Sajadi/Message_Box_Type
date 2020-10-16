@@ -20,6 +20,7 @@
     background-color: aliceblue;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 .chatBox-bottom {
@@ -36,7 +37,7 @@
     height: 100%;
     margin-top: 1vh;
     margin-left: 4%;
-    margin-top: 2%;
+    margin-top: 4%;
     border-radius: 5vh ;
 
 }
@@ -51,11 +52,27 @@
     /* margin: 2vh 6vh 0 6vh; */
 }
 .chatBox-body-text p {
-    margin-left: 2vh
+    font-family: cursive;
 }
+
 .chatBox-body-text-admin {
     text-align:center; 
     margin: 2vh 6vh 0 6vh;
     background-color: brown;
     border-radius: 1vh;
+}
+
+.chatBox-body-text-admin p {
+    font-family: cursive;
+}
+.text {
+    margin-top: -3vh;
+    font-size: 2.4vh;
+    margin-left: 4vh;
+}
+.user {
+    margin-left: 2vh;
+
+    font-size: 3vh;
+    margin-top: 1.2vh;
 }

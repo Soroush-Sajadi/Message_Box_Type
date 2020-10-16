@@ -45,7 +45,9 @@ const Chat = () => {
     socket.on('joinMessage', (message: Messages) => {
       // console.log('are u here again!')
       setJoinMessage(message.text)
-      dispatch({type:"ADD_MSGS_CHAT", payload: message })
+      if (message.text !== 'false') {
+        dispatch({type:"ADD_MSGS_CHAT", payload: message })
+      }
     })
   },[name, room]);
 
