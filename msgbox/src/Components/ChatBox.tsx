@@ -29,8 +29,8 @@ const ChatBox = () => {
         {/* <h3>hi</h3> */}
       </div>
       <div className="chatBox-body">
-        {messages.map(item => <div className="chatBox-body-text">
-          <p>{item.user}:{item.text}</p>
+        {messages.map(item => <div  className={item.user === "admin" ? "chatBox-body-text-admin": "chatBox-body-text"} >
+          <p>{item.user}: {item.text}</p>
         </div>)}
       </div>
       <div className="chatBox-bottom">
