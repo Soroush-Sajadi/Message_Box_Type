@@ -33,7 +33,6 @@ const ChatBox = () => {
     scrollToBottom()
   },[messages])
 
-  console.log(owner)
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">
@@ -41,7 +40,7 @@ const ChatBox = () => {
         <h3>Welcome to My Chat Box!</h3>
       </div>
       <div className="chatBox-body">
-        {messages.map(item => <div ref={messagesEndRef}  className={item.user === "admin" ? "chatBox-body-text-admin": item.user === owner ? "chatBox-body-text-owner" :"chatBox-body-text"} >
+        {messages.map((item, i) => <div key={i} ref={messagesEndRef}  className={item.user === "admin" ? "chatBox-body-text-admin": item.user === owner ? "chatBox-body-text-owner" :"chatBox-body-text"} >
       {item.user === 'admin' ? <p >{item.text}</p>:<div><p className="user">{item.user}</p><p className="text">{item.text}</p></div>
         }
         </div>)}

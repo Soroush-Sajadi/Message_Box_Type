@@ -18,16 +18,23 @@ io.on("connection", (socket) => {
         // const id: string = `${Math.floor(Math.random( ) * 10000000000000)}`
         const { error, user } = user_1.addUser({ id: socket.id, name, room });
         // tslint:disable-next-line:no-console
-        console.log(user);
+        // console.log(user)
         if (error)
             return socket.emit('joinMessage', { user: 'admin', text: 'false' });
+        const allMessages = user_1.getChats(user.room);
+        // tslint:disable-next-line:no-console
+        // console.log('its me',te)
         socket.emit('joinMessage', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
         socket.broadcast.to(user.room).emit('joinMessage', { user: 'admin', text: `${user.name} has joined` });
+        socket.emit('getPreviousMessages', allMessages);
         socket.join(user.room);
         callback();
     });
     socket.on('sendMessage', (message) => {
         const user = user_1.getUser(socket.id);
+        user_1.addChat(user.room, { user: user.name, text: message });
+        // tslint:disable-next-line:no-console
+        // console.log(JSON.stringify(y))
         io.to(user.room).emit('message', { user: user.name, text: message });
     });
     socket.on('disconnect', () => {

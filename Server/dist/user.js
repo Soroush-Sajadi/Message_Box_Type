@@ -1,11 +1,9 @@
 "use strict";
-// const { use } = require("./router");
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.removeUser = exports.addUser = void 0;
-// interface Error {
-//     error: string
-// }
+exports.getChats = exports.addChat = exports.getUser = exports.removeUser = exports.addUser = exports.usersChat = void 0;
 const users = [];
+// const usersChat: UsersChat[] = [{room:'',[{user:"asdas",text:"sdasd"}]}];
+exports.usersChat = [];
 // change the return type
 exports.addUser = ({ id, name, room }) => {
     name = name.trim().toLowerCase();
@@ -25,7 +23,29 @@ exports.removeUser = (id) => {
     }
 };
 exports.getUser = (id) => users.find(user => user.id === id);
-const getUsersInRoom = (room) => users.filter(user => user.room === room);
+exports.addChat = (room, message) => {
+    if (exports.usersChat.length !== 0) {
+        exports.usersChat.forEach(item => {
+            if (item.room === room) {
+                item.messages.push(message);
+            }
+        });
+        return exports.usersChat;
+    }
+    exports.usersChat.push({ room, messages: [message] });
+    return exports.usersChat;
+};
+exports.getChats = (room) => {
+    let res = [];
+    exports.usersChat.map(item => {
+        if (item.room === room) {
+            res = item.messages;
+        }
+    });
+    return res;
+};
+// tslint:disable-next-line:no-console
+// const getUsersInRoom = (room: string) => users.filter(user=> user.room === room);
 // const addMember = (name, room) => {
 //     const excistingUser = members.find(user => user.room === room && user.name === name);
 //     if (excistingUser) {

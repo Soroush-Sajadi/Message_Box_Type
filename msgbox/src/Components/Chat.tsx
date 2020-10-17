@@ -28,7 +28,7 @@ const Chat = () => {
   const name = useSelector <any>(state => (state.joinReducer.newUser)[0][0]);
   const room = useSelector <any>(state => (state.joinReducer.newUser)[0][1]);
   const message = useSelector <any>(state => state.messageReducer);
-  const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer);
+  // const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer);
   const ENDPOINT: string = 'localhost:5000';
   const dispatch = useDispatch();
 
@@ -48,10 +48,29 @@ const Chat = () => {
     socket.on('joinMessage', (message: Messages) => {
       setJoinMessage(message.text)
       if (message.text !== 'false') {
+        getPreviousMessages()
         dispatch({type:"ADD_MSGS_CHAT", payload: message })
       }
     })
   },[name, room]);
+
+  const getPreviousMessages = () => {
+    socket.on('getPreviousMessages', (messages: Messages[]) => {
+      if (messages.length !== 0) {
+        messages.map(item => {
+          dispatch({type:"ADD_MSGS_CHAT", payload: item })
+        })
+      }
+      // console.log(messages)
+    //   setJoinMessage(message.text)
+    //   if (message.text !== 'false') {
+    //     dispatch({type:"ADD_MSGS_CHAT", payload: message })
+    //   }
+    // })
+  })}
+    
+  
+
 
   useEffect(() => {
       socket.on('message', (message: Messages) => {
