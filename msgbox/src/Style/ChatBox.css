@@ -14,10 +14,21 @@
     display: flex;
 }
 
-.chatBox-header h3 {
-    
+.chatBox-header-members {
+    width: 75%;
+    /* background-color: darkcyan; */
+    font-size: 2.7vh;
+    font-family: cursive;
+    margin-left: 8%;
 }
 
+.chatBox-header-signout {
+    width: 25%;
+    font-size: 2.7vh;
+    font-family: cursive;
+    text-align: center;
+    cursor: pointer;
+}
 .chatBox-body {
     width: 100%;
     height: 59vh;

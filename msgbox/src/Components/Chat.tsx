@@ -1,5 +1,4 @@
 import React,{ useState, useEffect} from 'react';
-import ChatRender from './ChatRender';
 import ChatBox from './ChatBox'
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,14 +6,13 @@ import { Redirect } from 'react-router-dom';
 import { RootState } from '../Redux/store'
 
 let socket: any;
-interface Messages {
+interface Message {
   user: string
   text: string
 }
 
 const Chat = () => {
   const [ joinMessage, setJoinMessage ] = useState('');
-  const [ memberCounter, setMemberCounter ] = useState(0);
   const name: string = useSelector ((state:RootState) => state.joinReducer.name);
   const room: string = useSelector ((state:RootState) => (state.joinReducer.room));
   const message: string = useSelector ((state:RootState) => state.messageReducer);
@@ -34,7 +32,7 @@ const Chat = () => {
 
 
   useEffect(() => {
-    socket.on('joinMessage', (message: Messages) => {
+    socket.on('joinMessage', (message: Message) => {
       setJoinMessage(message.text)
       if (message.text !== 'false') {
         getPreviousMessages()
@@ -49,31 +47,23 @@ const Chat = () => {
   },[name, room]);
 
   const getPreviousMessages = () => {
-    socket.on('getPreviousMessages',(messages: Messages[]) => {
+    socket.on('getPreviousMessages',(messages: Message[]) => {
       if (messages.length !== 0) {
          messages.map(async item => {
           await dispatch({type:"ADD_MSGS_CHAT", payload: item })
         })
       }
-  
-      // console.log(messages)
-    //   setJoinMessage(message.text)
-    //   if (message.text !== 'false') {
-    //     dispatch({type:"ADD_MSGS_CHAT", payload: message })
-    //   }
-    // })
-  })}
+  })};
+
   useEffect(() => {
     socket.on('getNumberOfMembers',(message: number) => {
       console.log(message)
       dispatch({type:"MEMBER_COUNTER", payload: message })
     })
-  },[])
+  },[]);
   
-    
-    
   useEffect(() => {
-      socket.on('message', (message: Messages) => {
+      socket.on('message', (message: Message) => {
         dispatch({type:"ADD_MSGS_CHAT", payload:  message })
     }) 
   },[]);
@@ -83,11 +73,18 @@ const Chat = () => {
       socket.emit('sendMessage' , message);
       dispatch({type:"ADD_MSG_CHAT", payload: '' });
     }
-  },[message])
+  },[message]);
+
+  useEffect(() => {
+    socket.on('disconnectMember',(message: Message) => {
+      dispatch({type:"ADD_MSGS_CHAT", payload: message })
+    })
+  },[])
 
   return(
       <div className="container">
         { joinMessage === 'false'  ?  <Redirect to="/" /> : <ChatBox /> }
+        { name === '' || room === '' ? <Redirect to="/" />: null} 
       </div>
   )
 }

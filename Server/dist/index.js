@@ -23,8 +23,6 @@ io.on("connection", (socket) => {
             return socket.emit('joinMessage', { user: 'admin', text: 'false' });
         const allMessages = user_1.getChats(user.room);
         const numberOfMembers = user_1.getNumberOfMembers(user.room);
-        // tslint:disable-next-line:no-console
-        console.log('its me', numberOfMembers);
         socket.emit('joinMessage', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
         socket.broadcast.to(user.room).emit('joinMessage', { user: 'admin', text: `${user.name} has joined` });
         socket.emit('getPreviousMessages', allMessages);
@@ -36,14 +34,15 @@ io.on("connection", (socket) => {
     socket.on('sendMessage', (message) => {
         const user = user_1.getUser(socket.id);
         user_1.addChat(user.room, { user: user.name, text: message });
-        // tslint:disable-next-line:no-console
-        // console.log(JSON.stringify(y))
         io.to(user.room).emit('message', { user: user.name, text: message });
     });
     socket.on('disconnect', () => {
+        const user = user_1.getUser(socket.id);
+        if (user !== undefined) {
+            socket.broadcast.to(user.room).emit('disconnectMember', { user: 'admin', text: `${user.name} has disconnected ` });
+        }
         user_1.removeUser(socket.id);
         // tslint:disable-next-line:no-console
-        console.log('user just left');
     });
 });
 server.listen(PORT, 
