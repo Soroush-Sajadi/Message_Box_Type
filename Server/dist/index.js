@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
         }
         user_1.removeUser(socket.id);
         // tslint:disable-next-line:no-console
+        console.log('log out');
     });
 });
 server.listen(PORT, 

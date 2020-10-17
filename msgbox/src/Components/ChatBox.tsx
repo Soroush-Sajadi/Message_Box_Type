@@ -2,13 +2,17 @@ import React, { KeyboardEvent, useState, useRef, useEffect, MouseEvent } from 'r
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Chat } from '../Redux/chatReducer';
-import {RootState} from '../Redux/store';
+import { RootState } from '../Redux/store';
+import io from 'socket.io-client';
+import ChatBoxIcon from '../Images/Chat.jpg';
+
 import '../Style/ChatBox.css'
 
 interface Messages {
   user: string
   text: string
 }
+let socket: any
 
 const ChatBox = () => {
   const [ message, setMessage ] = useState('');
@@ -18,6 +22,7 @@ const ChatBox = () => {
   const numberOfMembers: number = useSelector((state: RootState) => state.numberOfMembersReducer);
   const dispatch = useDispatch();
   const messagesEndRef  = useRef<HTMLDivElement>(null);
+  const ENDPOINT: string = 'localhost:5000';
 
   const scrollToBottom = () => {
     if (messagesEndRef.current !== null) {
@@ -39,7 +44,9 @@ const ChatBox = () => {
 
   const getDisconnect = (event: MouseEvent) => {
     event.preventDefault();
+    socket = io(ENDPOINT)
     setDisconnect(true);
+      socket.emit('disconnect');
   }
 
   return(
@@ -47,6 +54,9 @@ const ChatBox = () => {
       <div className="chatBox-header">
         <div className="chatBox-header-members">
           <p>{numberOfMembers} Members</p>
+        </div>
+        <div className="chatBox-header-icon">
+          <img src={ChatBoxIcon} alt="Chat Box"/>
         </div>
         <div className="chatBox-header-signout" >
           <p onClick={getDisconnect}>Sign Out</p>

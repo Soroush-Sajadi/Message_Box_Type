@@ -25,8 +25,9 @@ const Chat = () => {
         dispatch({type:"OWNER", payload: name})
       });
       return () => {
+        socket.close();
         socket.emit('disconnect');
-        socket.off();
+
       }
   },[name, room]);
 

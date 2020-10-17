@@ -73,7 +73,6 @@ export const getNumberOfMembers = (room: string): number => {
     })
     return num;
 }
-
     // tslint:disable-next-line:no-console
 
 
