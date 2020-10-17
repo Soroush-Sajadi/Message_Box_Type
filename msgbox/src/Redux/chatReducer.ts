@@ -3,10 +3,7 @@ export interface Chat {
     user: string
     text: string
   }
-  const initialState: Chat[] = [
-    
-    
-  ];
+  const initialState: Chat[] = [];
  
   type Action = {type: "ADD_MSGS_CHAT", payload: string}
 

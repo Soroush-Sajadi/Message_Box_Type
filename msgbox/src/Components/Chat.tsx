@@ -3,8 +3,8 @@ import ChatRender from './ChatRender';
 import ChatBox from './ChatBox'
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, BrowserRouter as Router } from 'react-router-dom';
-import {RootState} from '../Redux/store'
+import { Redirect } from 'react-router-dom';
+import { RootState, JoinState } from '../Redux/store'
 
 
 let socket: any;
@@ -14,8 +14,12 @@ interface Messages {
   text: string
 }
 
-interface Message {
-  text: string
+// interface Message {
+//   text: string
+// }
+interface T {
+  name: string
+  room: string
 }
 
 const messagesInitilaState = {
@@ -25,10 +29,9 @@ const messagesInitilaState = {
 
 const Chat = () => {
   const [ joinMessage, setJoinMessage ] = useState('');
-  const name = useSelector <any>(state => (state.joinReducer.newUser)[0][0]);
-  const room = useSelector <any>(state => (state.joinReducer.newUser)[0][1]);
-  const message = useSelector <any>(state => state.messageReducer);
-  // const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer);
+  const name: string = useSelector ((state:RootState) => state.joinReducer.name);
+  const room: string = useSelector ((state:RootState) => (state.joinReducer.room));
+  const message: string = useSelector ((state:RootState) => state.messageReducer);
   const ENDPOINT: string = 'localhost:5000';
   const dispatch = useDispatch();
 
@@ -55,10 +58,10 @@ const Chat = () => {
   },[name, room]);
 
   const getPreviousMessages = () => {
-    socket.on('getPreviousMessages', (messages: Messages[]) => {
+    socket.on('getPreviousMessages',(messages: Messages[]) => {
       if (messages.length !== 0) {
-        messages.map(item => {
-          dispatch({type:"ADD_MSGS_CHAT", payload: item })
+         messages.map(async item => {
+          await dispatch({type:"ADD_MSGS_CHAT", payload: item })
         })
       }
       // console.log(messages)
@@ -87,7 +90,7 @@ const Chat = () => {
 
   return(
       <div className="container">
-        { joinMessage === 'false'  ? <Redirect to="/" /> : <ChatBox /> }
+        { joinMessage === 'false'  ?  <Redirect to="/" /> : <ChatBox /> }
       </div>
   )
 }

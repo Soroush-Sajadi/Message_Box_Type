@@ -1,6 +1,7 @@
 import React,{ useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
+import Chat from './Chat';
 import '../Style/JoinInput.css'
 
 const JoinInput = () => {
@@ -17,7 +18,7 @@ const JoinInput = () => {
   const dispatchNewUser = (e: React.MouseEvent) => {
     if (userOnChange !== '' && roomOnChange !== '' ) {
       e.preventDefault()
-      dispatch({type:"JOIN_USER", payload: [userOnChange,roomOnChange]})
+      dispatch({type:"JOIN_USER", payload: {name:userOnChange, room: roomOnChange}})
       setUser(userOnChange);
       setRoom(roomOnChange)
       setUserOnChange('');

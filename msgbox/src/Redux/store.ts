@@ -4,6 +4,7 @@ import { joinReducer}  from './joinReducer';
 import { chatReducer } from './chatReducer';
 import { messageReducer } from './messageReducer';
 import { ownerReducer } from './onwerReducer';
+import { type } from 'os';
 
 const rootReducer = combineReducers({
     joinReducer: joinReducer,
@@ -11,6 +12,6 @@ const rootReducer = combineReducers({
     messageReducer: messageReducer,
     ownerReducer: ownerReducer
   })
-
+export type JoinState = ReturnType<typeof joinReducer>
 export type RootState = ReturnType<typeof rootReducer>
 export const store = createStore(rootReducer);

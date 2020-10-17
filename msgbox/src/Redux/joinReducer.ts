@@ -1,18 +1,16 @@
-// import { type } from "os"
-
 export interface JoinState {
-  newUser: string[]
-}
-const initialState = {
-  newUser: []
+  name: string
+  room: string
 }
 
-type Action = {type: "JOIN_USER", payload: string}
+const initialState =  {name:'', room:''}
 
-export const joinReducer = (state:JoinState = initialState, action: Action) => {
+type Action = {type: "JOIN_USER", payload: JoinState}
+
+export const joinReducer = (state:JoinState = initialState , action: Action) :JoinState => {
   switch(action.type) {
     case "JOIN_USER": {
-      return {newUser: [ action.payload]}
+      return action.payload
     }
     default: 
       return state
