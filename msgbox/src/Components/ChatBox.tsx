@@ -13,6 +13,8 @@ const ChatBox = () => {
   const [ message, setMessage ] = useState('');
   const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer)
   const owner: string = useSelector((state: RootState) => state.ownerReducer);
+  const numberOfMembers: number = useSelector((state: RootState) => state.numberOfMembersReducer)
+  // console.log(numberOfMembers)
   const dispatch = useDispatch();
   const messagesEndRef  = useRef<HTMLDivElement>(null)
 
@@ -36,7 +38,7 @@ const ChatBox = () => {
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">
-        <h5>members 10</h5>
+        <h5>{numberOfMembers}members</h5>
         <h3>Welcome to My Chat Box!</h3>
       </div>
       <div className="chatBox-body">

@@ -5,7 +5,7 @@ import http from 'http';
 import express = require('express');
 import router from './route';
 import { Socket } from 'dgram';
-import { addUser, getUser, removeUser, addChat, getChats }  from './user';
+import { addUser, getUser, removeUser, addChat, getChats, getNumberOfMembers }  from './user';
 
 
 const app: Application = express();
@@ -35,11 +35,14 @@ io.on("connection", (socket: any) => {
 
     if (error) return socket.emit('joinMessage', {user: 'admin', text: 'false'});
     const allMessages = getChats(user.room);
+    const numberOfMembers = getNumberOfMembers(user.room)
       // tslint:disable-next-line:no-console
-    // console.log('its me',te)
+    console.log('its me',numberOfMembers)
     socket.emit('joinMessage', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}`});
     socket.broadcast.to(user.room).emit('joinMessage', {user: 'admin', text: `${user.name} has joined`});
-    socket.emit('getPreviousMessages',allMessages)
+    socket.emit('getPreviousMessages',allMessages);
+    socket.emit('getNumberOfMembers', numberOfMembers);
+    socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
     socket.join(user.room);
     callback()
 })

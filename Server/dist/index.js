@@ -22,11 +22,14 @@ io.on("connection", (socket) => {
         if (error)
             return socket.emit('joinMessage', { user: 'admin', text: 'false' });
         const allMessages = user_1.getChats(user.room);
+        const numberOfMembers = user_1.getNumberOfMembers(user.room);
         // tslint:disable-next-line:no-console
-        // console.log('its me',te)
+        console.log('its me', numberOfMembers);
         socket.emit('joinMessage', { user: 'admin', text: `${user.name}, Welcome to the room ${user.room}` });
         socket.broadcast.to(user.room).emit('joinMessage', { user: 'admin', text: `${user.name} has joined` });
         socket.emit('getPreviousMessages', allMessages);
+        socket.emit('getNumberOfMembers', numberOfMembers);
+        socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
         socket.join(user.room);
         callback();
     });

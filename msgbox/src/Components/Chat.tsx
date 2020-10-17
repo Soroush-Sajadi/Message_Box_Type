@@ -4,31 +4,17 @@ import ChatBox from './ChatBox'
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { RootState, JoinState } from '../Redux/store'
-
+import { RootState } from '../Redux/store'
 
 let socket: any;
-
 interface Messages {
   user: string
   text: string
 }
 
-// interface Message {
-//   text: string
-// }
-interface T {
-  name: string
-  room: string
-}
-
-const messagesInitilaState = {
-  user:'',
-  text:''
-}
-
 const Chat = () => {
   const [ joinMessage, setJoinMessage ] = useState('');
+  const [ memberCounter, setMemberCounter ] = useState(0);
   const name: string = useSelector ((state:RootState) => state.joinReducer.name);
   const room: string = useSelector ((state:RootState) => (state.joinReducer.room));
   const message: string = useSelector ((state:RootState) => state.messageReducer);
@@ -54,6 +40,11 @@ const Chat = () => {
         getPreviousMessages()
         dispatch({type:"ADD_MSGS_CHAT", payload: message })
       }
+      // const joinMessage = message.text.split(' ');
+      // if (joinMessage[ joinMessage.length - 1 ] === 'joined') {
+      //   console.log(memberCounter)
+      //   setMemberCounter (memberCounter + 1);
+      // }
     })
   },[name, room]);
 
@@ -64,6 +55,7 @@ const Chat = () => {
           await dispatch({type:"ADD_MSGS_CHAT", payload: item })
         })
       }
+  
       // console.log(messages)
     //   setJoinMessage(message.text)
     //   if (message.text !== 'false') {
@@ -71,10 +63,15 @@ const Chat = () => {
     //   }
     // })
   })}
-    
+  useEffect(() => {
+    socket.on('getNumberOfMembers',(message: number) => {
+      console.log(message)
+      dispatch({type:"MEMBER_COUNTER", payload: message })
+    })
+  },[])
   
-
-
+    
+    
   useEffect(() => {
       socket.on('message', (message: Messages) => {
         dispatch({type:"ADD_MSGS_CHAT", payload:  message })

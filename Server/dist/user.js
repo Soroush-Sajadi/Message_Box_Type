@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getChats = exports.addChat = exports.getUser = exports.removeUser = exports.addUser = exports.usersChat = void 0;
+exports.getNumberOfMembers = exports.getChats = exports.addChat = exports.getUser = exports.removeUser = exports.addUser = exports.usersChat = void 0;
 const users = [];
-// const usersChat: UsersChat[] = [{room:'',[{user:"asdas",text:"sdasd"}]}];
 exports.usersChat = [];
-// change the return type
 exports.addUser = ({ id, name, room }) => {
     name = name.trim().toLowerCase();
     room = room.trim().toLowerCase();
@@ -43,6 +41,15 @@ exports.getChats = (room) => {
         }
     });
     return res;
+};
+exports.getNumberOfMembers = (room) => {
+    let num = 0;
+    users.map(item => {
+        if (item.room === room) {
+            num = num + 1;
+        }
+    });
+    return num;
 };
 // tslint:disable-next-line:no-console
 // const getUsersInRoom = (room: string) => users.filter(user=> user.room === room);

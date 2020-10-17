@@ -15,10 +15,9 @@ interface UsersChat {
         room: string
         messages: UserMessage[]
 }
-// const usersChat: UsersChat[] = [{room:'',[{user:"asdas",text:"sdasd"}]}];
 
 export const usersChat: UsersChat[] = [];
-// change the return type
+
 export const addUser = ({id, name, room}: UserInformation) :any => {
     name = name.trim().toLowerCase();
     room = room.trim().toLowerCase();
@@ -63,6 +62,16 @@ export const getChats = (room: string):UserMessage[]  => {
             }
         })
         return res
+}
+
+export const getNumberOfMembers = (room: string): number => {
+    let num: number = 0
+    users.map(item => {
+        if(item.room === room) {
+            num = num + 1
+        }
+    })
+    return num;
 }
 
     // tslint:disable-next-line:no-console
