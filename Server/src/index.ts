@@ -58,7 +58,6 @@ io.on("connection", (socket: any) => {
     }
     removeUser(socket.id);
   // tslint:disable-next-line:no-console
-  console.log('log out')
   })
 });
 

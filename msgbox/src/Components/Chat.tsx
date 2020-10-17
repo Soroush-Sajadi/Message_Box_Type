@@ -49,11 +49,9 @@ const Chat = () => {
 
   const getPreviousMessages = () => {
     socket.on('getPreviousMessages',(messages: Message[]) => {
-      if (messages.length !== 0) {
          messages.map(async item => {
           await dispatch({type:"ADD_MSGS_CHAT", payload: item })
         })
-      }
   })};
 
   useEffect(() => {
