@@ -1,10 +1,9 @@
 "use strict"
-import { Request, Response, Application } from 'express';
+import { Application } from 'express';
 import socketio from "socket.io";
 import http from 'http';
 import express = require('express');
 import router from './route';
-import { Socket } from 'dgram';
 import { addUser, getUser, removeUser, addChat, getChats, getNumberOfMembers }  from './user';
 
 

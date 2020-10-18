@@ -50,7 +50,7 @@ const ChatBox = () => {
     }
    
   }
-  
+
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">

@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 
  router.get('/', (req, res) => {
-    res.send('how You doing')
+    res.send('Chat Box')
 })
 
 export default router;
