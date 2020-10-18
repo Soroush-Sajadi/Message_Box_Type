@@ -3,47 +3,46 @@ import ChatBox from './ChatBox'
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { RootState } from '../Redux/store'
+import { RootState } from '../Redux/store';
+import { Message } from '../Redux/chatReducer';
 
 let socket: any;
-interface Message {
-  user: string
-  text: string
-}
+// interface Message {
+//   user: string
+//   text: string
+// }
 
-const Chat = () => {
-  const [ joinMessage, setJoinMessage ] = useState('');
+const SocketIo = () => {
   const name: string = useSelector ((state:RootState) => state.joinReducer.name);
   const room: string = useSelector ((state:RootState) => (state.joinReducer.room));
   const message: string = useSelector ((state:RootState) => state.messageReducer);
-  const ENDPOINT: string = 'localhost:5000';
+  const accountIsTaken = useSelector((state: RootState ) => state.accountErrorHandlerReducer)
   const dispatch = useDispatch();
+  const ENDPOINT: string = 'localhost:5000';
+
 
   useEffect(() =>  {
       socket = io(ENDPOINT)
       socket.emit('join', {name, room}, () => {
-        dispatch({type:"OWNER", payload: name})
       });
+
       return () => {
         socket.close();
         socket.emit('disconnect');
-
       }
+
   },[name, room]);
 
 
   useEffect(() => {
     socket.on('joinMessage', (message: Message) => {
-      setJoinMessage(message.text)
       if (message.text !== 'false') {
+        dispatch({type:"OWNER", payload: name})
         getPreviousMessages()
         dispatch({type:"ADD_MSGS_CHAT", payload: message })
+      } else{
+        dispatch({type:"ERROR", payload: true})
       }
-      // const joinMessage = message.text.split(' ');
-      // if (joinMessage[ joinMessage.length - 1 ] === 'joined') {
-      //   console.log(memberCounter)
-      //   setMemberCounter (memberCounter + 1);
-      // }
     })
   },[name, room]);
 
@@ -56,7 +55,6 @@ const Chat = () => {
 
   useEffect(() => {
     socket.on('getNumberOfMembers',(message: number) => {
-      console.log(message)
       dispatch({type:"MEMBER_COUNTER", payload: message })
     })
   },[]);
@@ -81,11 +79,11 @@ const Chat = () => {
   },[])
 
   return(
-      <div className="container">
-        { joinMessage === 'false'  ?  <Redirect to="/" /> : <ChatBox /> }
+      <div>
+        { accountIsTaken ?  <Redirect to="/" /> : <ChatBox /> }
         { name === '' || room === '' ? <Redirect to="/" />: null} 
       </div>
   )
 }
 
-export default Chat;
+export default SocketIo;

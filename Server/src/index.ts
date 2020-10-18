@@ -16,33 +16,29 @@ const server = http.createServer(app)
 const io = socketio(server);
 
 interface Information {
-  id: string
   name: string
   room: string
 }
-interface Error {
-  error: string
-}
+
 
 app.use(router);
 io.on("connection", (socket: any) => {
-  socket.on('join', ({ name , room }: any , callback: any)  => {
-    // const id: string = `${Math.floor(Math.random( ) * 10000000000000)}`
+  socket.on('join', ({ name , room }: Information  )  => {
     const {error, user}  = addUser({id:socket.id, name, room});
-    // tslint:disable-next-line:no-console
-    // console.log(user)
-
 
     if (error) return socket.emit('joinMessage', {user: 'admin', text: 'false'});
+
     const allMessages = getChats(user.room);
     const numberOfMembers = getNumberOfMembers(user.room)
+
     socket.emit('joinMessage', {user: 'admin', text: `${user.name}, Welcome to the room ${user.room}`});
     socket.broadcast.to(user.room).emit('joinMessage', {user: 'admin', text: `${user.name} has joined`});
+
     socket.emit('getPreviousMessages',allMessages);
+
     socket.emit('getNumberOfMembers', numberOfMembers);
     socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
     socket.join(user.room);
-    callback()
   })
 
   socket.on('sendMessage', (message: string) => {
@@ -53,11 +49,13 @@ io.on("connection", (socket: any) => {
 
   socket.on('disconnect', () => {
     const user = getUser(socket.id);
-    if (user !== undefined) {
-      socket.broadcast.to(user.room).emit('disconnectMember', {user: 'admin', text: `${user.name} has disconnected `});
-    }
     removeUser(socket.id);
-  // tslint:disable-next-line:no-console
+    if (user !== undefined) {
+      const numberOfMembers = getNumberOfMembers(user.room);
+      socket.broadcast.to(user.room).emit('disconnectMember', {user: 'admin', text: `${user.name} has disconnected `});
+      socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
+
+    }
   })
 });
 

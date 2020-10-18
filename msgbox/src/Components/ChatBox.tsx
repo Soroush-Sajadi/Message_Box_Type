@@ -1,23 +1,18 @@
 import React, { KeyboardEvent, useState, useRef, useEffect, MouseEvent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Chat } from '../Redux/chatReducer';
+import { Message } from '../Redux/chatReducer';
 import { RootState } from '../Redux/store';
 import io from 'socket.io-client';
 import ChatBoxIcon from '../Images/Chat.jpg';
-
 import '../Style/ChatBox.css'
 
-interface Messages {
-  user: string
-  text: string
-}
 let socket: any
 
 const ChatBox = () => {
   const [ message, setMessage ] = useState('');
   const [ disconnect, setDisconnect ] = useState(false)
-  const messages: Messages[] = useSelector ((state: RootState)  => state.chatReducer);
+  const messages: Message[] = useSelector ((state: RootState)  => state.chatReducer);
   const owner: string = useSelector((state: RootState) => state.ownerReducer);
   const numberOfMembers: number = useSelector((state: RootState) => state.numberOfMembersReducer);
   const dispatch = useDispatch();
@@ -47,7 +42,6 @@ const ChatBox = () => {
     socket = io(ENDPOINT)
     setDisconnect(true);
     dispatch({type:"REMOVE_ALL_MESSAGES" })
-    console.log(messages)
     return () => {
       socket.close();
       socket.emit('disconnect');
@@ -56,7 +50,7 @@ const ChatBox = () => {
     }
    
   }
-
+  console.log(owner)
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">

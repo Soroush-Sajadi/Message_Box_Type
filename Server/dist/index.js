@@ -14,11 +14,8 @@ const server = http_1.default.createServer(app);
 const io = socket_io_1.default(server);
 app.use(route_1.default);
 io.on("connection", (socket) => {
-    socket.on('join', ({ name, room }, callback) => {
-        // const id: string = `${Math.floor(Math.random( ) * 10000000000000)}`
+    socket.on('join', ({ name, room }) => {
         const { error, user } = user_1.addUser({ id: socket.id, name, room });
-        // tslint:disable-next-line:no-console
-        // console.log(user)
         if (error)
             return socket.emit('joinMessage', { user: 'admin', text: 'false' });
         const allMessages = user_1.getChats(user.room);
@@ -29,7 +26,6 @@ io.on("connection", (socket) => {
         socket.emit('getNumberOfMembers', numberOfMembers);
         socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
         socket.join(user.room);
-        callback();
     });
     socket.on('sendMessage', (message) => {
         const user = user_1.getUser(socket.id);
@@ -38,11 +34,14 @@ io.on("connection", (socket) => {
     });
     socket.on('disconnect', () => {
         const user = user_1.getUser(socket.id);
-        if (user !== undefined) {
-            socket.broadcast.to(user.room).emit('disconnectMember', { user: 'admin', text: `${user.name} has disconnected ` });
-        }
         user_1.removeUser(socket.id);
-        // tslint:disable-next-line:no-console
+        if (user !== undefined) {
+            const numberOfMembers = user_1.getNumberOfMembers(user.room);
+            // tslint:disable-next-line:no-console
+            console.log(1, numberOfMembers);
+            socket.broadcast.to(user.room).emit('disconnectMember', { user: 'admin', text: `${user.name} has disconnected ` });
+            socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
+        }
     });
 });
 server.listen(PORT, 

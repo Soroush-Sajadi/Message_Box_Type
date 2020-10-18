@@ -1,5 +1,4 @@
- 
-type Action = {type: "ADD_MSG_CHAT", payload: string}
+ type Action = {type: "ADD_MSG_CHAT", payload: string}
 
 export const messageReducer = (state: string = '', action: Action) => {
   switch(action.type) {

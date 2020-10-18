@@ -1,7 +1,6 @@
- 
-type Action = {type: "ERROR", payload: string}
+ type Action = {type: "ERROR", payload: boolean}
 
-export const accountErrorHandlerReducer = (state: string = '', action: Action) => {
+export const accountErrorHandlerReducer = (state: boolean = false, action: Action) => {
   switch(action.type) {
     case "ERROR": {
       return  action.payload

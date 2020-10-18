@@ -1,12 +1,10 @@
 body {
     background: linear-gradient(110deg, white 29%, #0ba5ff78 70%);
-
 }
+
 .join-outer-container {
     text-align: center;
     margin-top: 30vh;
-    
-
 }
 
 .join-inner-conatainer {
@@ -14,7 +12,6 @@ body {
     align-items: center;
     margin: auto;
     width: 30%;
-    /* width: 40%; */
     height: 40vh;
 }
 
@@ -25,8 +22,6 @@ body {
     width: 100%;
     border-bottom: .3vh solid ;
     background: linear-gradient(-14deg, white 29%, #0ba5ff78 70%);
-
-
 }
 
 .join-inner-conatainer input:focus {

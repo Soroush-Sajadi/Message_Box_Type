@@ -1,13 +1,12 @@
- 
-export interface Chat {
+ export interface Message {
     user: string
     text: string
   }
-  const initialState: Chat[] = [];
+  const initialState: Message[] = [];
  
   type Action = {type: "ADD_MSGS_CHAT" | "REMOVE_ALL_MESSAGES", payload: string}
 
-export const chatReducer = (state: Chat[]= initialState , action: Action) => {
+export const chatReducer = (state: Message[]= initialState , action: Action) => {
   switch(action.type) {
     case "ADD_MSGS_CHAT": {
       return [ ...state, action.payload]

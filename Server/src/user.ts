@@ -4,19 +4,17 @@ interface UserInformation {
     name: string
     room: string
 }
-const users: UserInformation[] = [];
-
 interface UserMessage {
     user: string
     text: string
 }
-
 interface UsersChat {
         room: string
         messages: UserMessage[]
 }
 
-export const usersChat: UsersChat[] = [];
+const users: UserInformation[] = [];
+const usersChat: UsersChat[] = [];
 
 export const addUser = ({id, name, room}: UserInformation) :any => {
     name = name.trim().toLowerCase();
@@ -73,30 +71,3 @@ export const getNumberOfMembers = (room: string): number => {
     })
     return num;
 }
-    // tslint:disable-next-line:no-console
-
-
-
-
-
-
-
-
-
-
-
-
-// const getUsersInRoom = (room: string) => users.filter(user=> user.room === room);
-
-
-// const addMember = (name, room) => {
-//     const excistingUser = members.find(user => user.room === room && user.name === name);
-//     if (excistingUser) {
-//         return {err: 'Username is taken'}
-//     }
-//     const newMember = { name, room }
-//     members.push(newMember)
-//     return{members}
-
-// }
-
