@@ -40,12 +40,12 @@ body {
     height: 4vh;
     float: left;
     background-color: #159ad4;
-    font-size: 1.5vh;
+    font-size: 2vh;
     cursor: pointer;
 }
 
 .join-inner-conatainer button:hover {
-    font-size: 1.8vh;
+    font-size: 2.2vh;
 }
 
 ::-webkit-input-placeholder {
@@ -54,4 +54,9 @@ body {
 
 .join-inner-conatainer h1 {
     font-size: 3.7vh
+}
+
+.error-message {
+    font-size: 3vh;
+    margin-top: 2vh;
 }

@@ -37,8 +37,6 @@ io.on("connection", (socket) => {
         user_1.removeUser(socket.id);
         if (user !== undefined) {
             const numberOfMembers = user_1.getNumberOfMembers(user.room);
-            // tslint:disable-next-line:no-console
-            console.log(1, numberOfMembers);
             socket.broadcast.to(user.room).emit('disconnectMember', { user: 'admin', text: `${user.name} has disconnected ` });
             socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
         }

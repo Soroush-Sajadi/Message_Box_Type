@@ -50,7 +50,7 @@ const ChatBox = () => {
     }
    
   }
-  console.log(owner)
+  
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">

@@ -54,7 +54,6 @@ io.on("connection", (socket: any) => {
       const numberOfMembers = getNumberOfMembers(user.room);
       socket.broadcast.to(user.room).emit('disconnectMember', {user: 'admin', text: `${user.name} has disconnected `});
       socket.broadcast.to(user.room).emit('getNumberOfMembers', numberOfMembers);
-
     }
   })
 });

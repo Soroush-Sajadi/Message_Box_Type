@@ -25,7 +25,7 @@ const JoinInput = () => {
       dispatch({type:"ERROR", payload: false})
     }
   }
-  console.log(accountIsTaken)
+  
   return(
    <>
     <div className="join-outer-container">
@@ -34,7 +34,7 @@ const JoinInput = () => {
         <div><input placeholder="Name" value={userOnChange} className="join-input-name" type="text" onChange= {event => setUserOnChange(event.target.value)}/></div>
         <div><input placeholder="Room" value={roomOnChange}  className="join-input-room" type="text" onChange= {event => setRoomOnChange(event.target.value)}/></div>
         <button onClick={dispatchNewUser} className="button mt-20" type="submit">Sign In</button>
-          {accountIsTaken ? <p>Account Is Taken</p>: null}
+          {accountIsTaken ? <p className="error-message">Account Is Taken</p>: null}
         {user !== '' && room !== '' ? <Redirect  to={`/chat`}/>: null}
       </div> 
   </div>
