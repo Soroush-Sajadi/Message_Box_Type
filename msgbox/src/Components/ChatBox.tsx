@@ -46,12 +46,17 @@ const ChatBox = () => {
     event.preventDefault();
     socket = io(ENDPOINT)
     setDisconnect(true);
+    dispatch({type:"REMOVE_ALL_MESSAGES" })
+    console.log(messages)
     return () => {
+      socket.close();
       socket.emit('disconnect');
+      socket.off();
+  
     }
+   
   }
 
-  console.log(messages)
   return(
     <div className = "chatBox-wrapper">
       <div className="chatBox-header">
