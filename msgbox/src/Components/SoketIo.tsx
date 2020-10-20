@@ -24,6 +24,7 @@ const SocketIo = () => {
   useEffect(() =>  {
       socket = io(ENDPOINT)
       socket.emit('join', {name, room}, () => {
+        dispatch({type:"OWNER", payload: name})
       });
 
       return () => {
